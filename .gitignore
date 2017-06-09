@@ -1,0 +1,9 @@
+# dependencies
+libs
+
+# build
+out
+
+# project
+.idea
+*.iml
