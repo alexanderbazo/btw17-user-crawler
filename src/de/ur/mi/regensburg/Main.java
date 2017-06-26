@@ -28,7 +28,7 @@ public class Main {
 
 
         /* test-subject: electoral District
-        result: not yet evaluated, probably mixed results
+        result: not yet evaluated, probably mixed results 
         TH:
         SH:
         SAH:
