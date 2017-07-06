@@ -42,6 +42,8 @@ public class Parliament extends Page {
             addPhotoUrl(formattedInfos, cells, builder);
             addYearOfBirth(formattedInfos, cells, builder);
             addElectoralDistrictAndKindOfMandate(formattedInfos, cells, builder);
+            addComments(formattedInfos, cells, builder);
+
 
             ParliamentMember member = builder.build();
             parliament.add(member);
@@ -129,29 +131,16 @@ public class Parliament extends Page {
             if(electoralDistrict.contains("!")){
                 electoralDistrict = electoralDistrict.split("!")[1];
             }
+            if(state==FederalState.HE && electoralDistrict.contains("Wahlkreis")){
+                electoralDistrict = electoralDistrict.split("Wahlkreis")[1];
+            }
             builder.setElectoralDistrict(electoralDistrict.trim());
             String kindOfMandate = getKindOfMandate(formattedInfos, cells, electoralDistrict);
             builder.setKindOfMandate(kindOfMandate);
         }
     }
-/*
-    TH: passt -> bei leeren Einträgen directMandate=false
-    SH: passt -> Bei "Listenmandat" directMandate=false
-    SAH: passt -> Bei "Listenmandat" directMandate=false
-    SAC:passt-> bei leeren Einträgen directMandate = false
-    SL: passt -> bei "Landesliste" directMandate = false;
-    RP: passt -> bei leeren Einträgen directMandate = false (list nicht immer true, Nachrücker...)
-    NRW:passt -> bei "Landesliste" directMandate= false
-    NS:passt -> bei "Landesliste" directMandate = false
-    MVP:passt -> bei "Landesliste" directMandate= false;
-    HE: Wahlkreis vor Wahlkreisname weg -> bei "Landesliste" directMandate = false;
-    HA:passt-> bei leer oder - directMandate = false;
-    BRE: passt -> Zahlen durch Bremen bzw. Bremerhaven ersetzen
-    BRA:passt -> leere Einträge directMandate = false
-    BER:passt -> "Landesliste" directMandate=false, Liste -> Landesliste, Bezirksliste
-    BY: passt -> direkt Mandat nach entsprechender Spalte ja-> true
-    BW: passt -> es gibt nicht Direkt/List, sondern 1./2. -> nach entsprechender Spalte
-    */
+
+    //To-Do: Verbalisieren der Zahlen -> no magic numbers
     private String getKindOfMandate(ArrayList<Integer> formattedInfos, Elements cells, String electoralDistrict){
         String mandate;
         if(electoralDistrict.equals("Listenmandat")||electoralDistrict.equals("Landesliste")){
@@ -180,6 +169,13 @@ public class Parliament extends Page {
             mandate = "Direktmandat";
         }
         return mandate;
+    }
+
+    private void addComments(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
+        if(formattedInfos.get(11) != -1) {
+            String comments = cells.eq(formattedInfos.get(11)).text();
+            builder.setComments(comments);
+        }
     }
 
 }
