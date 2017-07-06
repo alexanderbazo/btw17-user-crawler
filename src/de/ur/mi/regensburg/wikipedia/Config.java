@@ -35,6 +35,22 @@ public class Config {
     public static final String IMAGE_OF_NONE= "Image_of_none.svg";
 
 
+    public static final int CONFIG_PHOTO = 0;
+    public static final int CONFIG_NAME = 1;
+    public static final int CONFIG_YEAR = 2;
+    public static final int CONFIG_PARTY = 3;
+    public static final int CONFIG_ELEC_DIS = 4;
+    public static final int CONFIG_MANDATE_BW = 5;
+    public static final int CONFIG_PERCENT = 6;
+    public static final int CONFIG_SUBDISTRICT_BY = 7;
+    public static final int CONFIG_MANDATE_BY = 8;
+    public static final int CONFIG_MANDATE = 9;
+    public static final int CONFIG_BOARDS = 10;
+    public static final int CONFIG_COMMENTS = 11;
+    public static final int CONFIG_LIST_RANK = 12;
+    public static final int CONFIG_DISTRICT_RANK = 13;
+    public static final int CONFIG_DISTRICT_NUM = 14;
+
 
 
 

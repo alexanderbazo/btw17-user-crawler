@@ -18,6 +18,8 @@ public class ParliamentMember {
     private final String photoURL;
     private final String comments;
     private final String boards;
+    private final String listRank;
+    private final String districtRank;
 
     public static class Builder {
         //required parameters
@@ -33,6 +35,8 @@ public class ParliamentMember {
         private String photoURL = "";
         private String comments = "";
         private String boards = "";
+        private String listRank = "";
+        private String districtRank = "";
 
 
         public Builder(String federalState, String party, String firstName, String lastName) {
@@ -77,6 +81,16 @@ public class ParliamentMember {
             return this;
         }
 
+        public Builder setListRank(String value){
+            listRank = value;
+            return this;
+        }
+
+        public Builder setDistrictRank(String value){
+            districtRank = value;
+            return this;
+        }
+
 
         public ParliamentMember build() {
             return new ParliamentMember(this);
@@ -96,6 +110,8 @@ public class ParliamentMember {
         this.photoURL = builder.photoURL;
         this.comments = builder.comments;
         this.boards = builder.boards;
+        this.listRank = builder.listRank;
+        this.districtRank = builder.districtRank;
     }
 
     public String getFederalState(){ return federalState; }
@@ -140,6 +156,14 @@ public class ParliamentMember {
         return boards;
     }
 
+    public String getListRank(){
+        return listRank;
+    }
+
+    public String getDistrictRank(){
+        return districtRank;
+    }
+
     @Override
     public String toString() {
         return "ParliamentMember{" +
@@ -154,6 +178,8 @@ public class ParliamentMember {
                 ", photoURL='" + photoURL + '\'' +
                 ", comments='" + comments + '\'' +
                 ", boards='" + boards + '\'' +
+                ", listRank='" + listRank + '\'' +
+                ", districtRank='" + districtRank + '\'' +
                 '}';
     }
 

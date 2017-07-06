@@ -45,6 +45,8 @@ public class Parliament extends Page {
             addVotesPercentage(formattedInfos, cells, builder);
             addComments(formattedInfos, cells, builder);
             addBoards(formattedInfos, cells, builder);
+            addListRank(formattedInfos, cells, builder);
+            addDistrictRank(formattedInfos, cells, builder);
 
             ParliamentMember member = builder.build();
             parliament.add(member);
@@ -70,10 +72,10 @@ public class Parliament extends Page {
 
     private ParliamentMember.Builder getMemberBuilder(ArrayList<Integer> formattedInfos, Elements cells){
         String federalState = state.name();
-        String names = cells.eq(formattedInfos.get(1)).select("a").text();
+        String names = cells.eq(formattedInfos.get(Config.CONFIG_NAME)).select("a").text();
         String firstName = getFirstName(separateNames(names));
         String lastName = getLastName(separateNames(names));
-        String party = cells.eq(formattedInfos.get(3)).text();
+        String party = cells.eq(formattedInfos.get(Config.CONFIG_PARTY)).text();
         return new ParliamentMember.Builder(federalState, party, firstName, lastName);
     }
 
@@ -97,8 +99,8 @@ public class Parliament extends Page {
         return names[names.length-1].trim();
     }
     private void addPhotoUrl(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
-        if(formattedInfos.get(0) != -1){
-            String photoUrl = cells.eq(formattedInfos.get(0)).select("a img").attr("src");
+        if(formattedInfos.get(Config.CONFIG_PHOTO) != -1){
+            String photoUrl = cells.eq(formattedInfos.get(Config.CONFIG_PHOTO)).select("a img").attr("src");
             if(!photoUrl.contains(Config.IMAGE_OF_NONE)) {
                 builder.setPhotoURL(photoUrl);
             }
@@ -106,8 +108,8 @@ public class Parliament extends Page {
     }
 
     private void addYearOfBirth(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder) {
-        if(formattedInfos.get(2) != -1) {
-            String yearOfBirth = cells.eq(formattedInfos.get(2)).text();
+        if(formattedInfos.get(Config.CONFIG_YEAR) != -1) {
+            String yearOfBirth = cells.eq(formattedInfos.get(Config.CONFIG_YEAR)).text();
             if(state==FederalState.NRW){
                 String[] numbers = yearOfBirth.split("[0-9]{5,}.."); //sieht aus wie whitespace, wird aber nicht als solcher erkannt, auch nicht von trim...
                 if(numbers.length > 1) {
@@ -119,14 +121,14 @@ public class Parliament extends Page {
     }
 
     private void addElectoralDistrictAndKindOfMandate(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
-        if(formattedInfos.get(4) != -1) {
+        if(formattedInfos.get(Config.CONFIG_ELEC_DIS) != -1) {
             String electoralDistrict;
             if (state == FederalState.BY) {
-                electoralDistrict = cells.eq(formattedInfos.get(4)).select("a").text() + " " + cells.eq(formattedInfos.get(7)).select("a").text();
-            } else if (formattedInfos.get(14) != -1) {
-                electoralDistrict =  cells.eq(formattedInfos.get(4)).text() + " " + cells.eq(formattedInfos.get(14)).text();
+                electoralDistrict = cells.eq(formattedInfos.get(Config.CONFIG_ELEC_DIS)).select("a").text() + " " + cells.eq(formattedInfos.get(Config.CONFIG_SUBDISTRICT_BY)).select("a").text();
+            } else if (formattedInfos.get(Config.CONFIG_DISTRICT_NUM ) != -1) {
+                electoralDistrict =  cells.eq(formattedInfos.get(Config.CONFIG_ELEC_DIS)).text() + " " + cells.eq(formattedInfos.get(Config.CONFIG_DISTRICT_NUM )).text();
             } else {
-                electoralDistrict = cells.eq(formattedInfos.get(4)).text();
+                electoralDistrict = cells.eq(formattedInfos.get(Config.CONFIG_ELEC_DIS)).text();
             }
 
             if(electoralDistrict.contains("!")){
@@ -147,9 +149,9 @@ public class Parliament extends Page {
         if(electoralDistrict.equals("Listenmandat")||electoralDistrict.equals("Landesliste")){
             mandate = "Landesliste";
         }else if(state == FederalState.BW){
-            mandate = cells.eq(formattedInfos.get(5)).text();
+            mandate = cells.eq(formattedInfos.get(Config.CONFIG_MANDATE_BW)).text();
         }else if(state == FederalState.BY){
-            if((cells.eq(formattedInfos.get(8)).text()).equals("ja")){
+            if((cells.eq(formattedInfos.get(Config.CONFIG_MANDATE_BY)).text()).equals("ja")){
                 mandate ="Direktmandat";
             }else{
                 mandate="Landesliste";
@@ -173,23 +175,43 @@ public class Parliament extends Page {
     }
 
     private void addVotesPercentage(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
-        if(formattedInfos.get(6) != -1){
-            String votesPercentage = cells.eq(formattedInfos.get(6)).text();
+        if(formattedInfos.get(Config.CONFIG_PERCENT) != -1){
+            String votesPercentage = cells.eq(formattedInfos.get(Config.CONFIG_PERCENT)).text();
             builder.setVotesPercentage(votesPercentage);
         }
     }
 
     private void addComments(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
-        if(formattedInfos.get(11) != -1) {
-            String comments = cells.eq(formattedInfos.get(11)).text();
+        if(formattedInfos.get(Config.CONFIG_COMMENTS) != -1) {
+            String comments = cells.eq(formattedInfos.get(Config.CONFIG_COMMENTS)).text();
             builder.setComments(comments);
         }
     }
 
     private void addBoards(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
-        if(formattedInfos.get(10) != -1){
-            String boards = cells.eq(formattedInfos.get(10)).text();
+        if(formattedInfos.get(Config.CONFIG_BOARDS) != -1){
+            String boards = cells.eq(formattedInfos.get(Config.CONFIG_BOARDS)).text();
             builder.setBoards(boards);
+        }
+    }
+
+    private void addListRank(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
+        if(formattedInfos.get(Config.CONFIG_LIST_RANK) != -1){
+            String listRank = cells.eq(formattedInfos.get(Config.CONFIG_LIST_RANK)).text();
+            if(listRank.equals("-")){
+                listRank = "";
+            }
+            builder.setListRank(listRank);
+        }
+    }
+
+    private void addDistrictRank(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
+        if(formattedInfos.get(Config.CONFIG_DISTRICT_RANK) != -1){
+            String districtRank = cells.eq(formattedInfos.get(Config.CONFIG_DISTRICT_RANK)).text();
+            if(districtRank.equals("-")){
+                districtRank = "";
+            }
+            builder.setDistrictRank(districtRank);
         }
     }
 

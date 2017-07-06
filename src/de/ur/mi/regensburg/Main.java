@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<String> rows = CSVReader.readCSV(";", Config.PATH_TO_STRUCTURE_CSV);
+        ArrayList<String> rows = CSVReader.readCSV(Config.PATH_TO_STRUCTURE_CSV);
 
         /* //endg�ltige Version -> f�rs Tests evtl ausgegraut
        for(int i = 0; i < 16; i++){
@@ -27,28 +27,25 @@ public class Main {
         */
 
 
-        /* test-subject: electoral District
-        result: not yet evaluated, probably mixed results
-        TH: passt -> bei leeren Einträgen directMandate=false
-        SH: passt -> Bei "Listenmandat" directMandate=false
-        SAH: passt -> Bei "Listenmandat" directMandate=false
-        SAC:passt-> bei leeren Einträgen directMandate = false
-        SL: passt -> bei "Landesliste" directMandate = false;
-        RP: passt -> bei leeren Einträgen directMandate = false (list nicht immer true, Nachrücker...)
-        NRW:passt -> bei "Landesliste" directMandate= false
-        NS:passt -> bei "Landesliste" directMandate = false
-        MVP:passt -> bei "Landesliste" directMandate= false;
-        HE: Wahlkreis vor Wahlkreisname weg -> bei "Landesliste" directMandate = false;
-        HA:passt-> bei leer oder - directMandate = false;
-        BRE: passt -> Zahlen durch Bremen bzw. Bremerhaven ersetzen
-        BRA:passt -> leere Einträge directMandate = false
-        BER:passt -> "Landesliste" directMandate=false, Liste -> Landesliste, Bezirksliste
-        BY: passt -> direkt Mandat nach entsprechender Spalte ja-> true
-        BW: passt -> es gibt nicht Direkt/List, sondern 1./2. -> nach entsprechender Spalte
-
-
-
+        /* No test at the moment
+        TH:
+        SH:
+        SAH:
+        SAC:
+        SL:
+        RP:
+        NRW:
+        NS:
+        MVP:
+        HE:
+        HA:
+        BRE:
+        BRA:
+        BER:
+        BY:
+        BW:
          */
+
         for(int i = 0; i < 16; i++){
             Parliament parliament;
             if(i == FederalState.BRE.ordinal()){
@@ -72,10 +69,6 @@ public class Main {
             System.out.println(m);
         }
         */
-
-        /*//test
-        System.out.println(FederalState.BW.name());
-        System.out.println(FederalState.BW.ordinal());
-        */
+        
     }
 }

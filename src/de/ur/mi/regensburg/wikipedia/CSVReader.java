@@ -10,8 +10,8 @@ import java.util.ArrayList;
  *
  */
 public class CSVReader {
-        public static ArrayList<String> readCSV(String separator, String pathToCSV) {
-            ArrayList <String> rows = new ArrayList<String>();
+        public static ArrayList<String> readCSV(String pathToCSV) {
+            ArrayList <String> rows = new ArrayList<>();
             String line = "";
             try (BufferedReader br = new BufferedReader(new FileReader(pathToCSV))) {
 
