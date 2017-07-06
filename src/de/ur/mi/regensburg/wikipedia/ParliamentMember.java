@@ -27,7 +27,7 @@ public class ParliamentMember {
         private final String lastName;
         //optional parameters
         private String votesPercentage = ""; //double?
-        private String kindOfMandate = ""; //enum?
+        private String kindOfMandate = "";
         private String electoralDistrict = "";
         private String yearOfBirth =""; //int?
         private String photoURL = "";

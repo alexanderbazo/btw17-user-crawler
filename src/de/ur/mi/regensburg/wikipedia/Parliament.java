@@ -25,7 +25,7 @@ public class Parliament extends Page {
 
         ArrayList<Integer> formattedInfos = reformatInfoRow(posOfInfosRow);
 
-        ArrayList<ParliamentMember> parliament = new ArrayList<ParliamentMember>();
+        ArrayList<ParliamentMember> parliament = new ArrayList<>();
         Elements rows;
         if(state== FederalState.BRE) {
             rows = getContentElements().eq(1).select("tbody tr");
@@ -42,8 +42,9 @@ public class Parliament extends Page {
             addPhotoUrl(formattedInfos, cells, builder);
             addYearOfBirth(formattedInfos, cells, builder);
             addElectoralDistrictAndKindOfMandate(formattedInfos, cells, builder);
+            addVotesPercentage(formattedInfos, cells, builder);
             addComments(formattedInfos, cells, builder);
-
+            addBoards(formattedInfos, cells, builder);
 
             ParliamentMember member = builder.build();
             parliament.add(member);
@@ -171,10 +172,24 @@ public class Parliament extends Page {
         return mandate;
     }
 
+    private void addVotesPercentage(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
+        if(formattedInfos.get(6) != -1){
+            String votesPercentage = cells.eq(formattedInfos.get(6)).text();
+            builder.setVotesPercentage(votesPercentage);
+        }
+    }
+
     private void addComments(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
         if(formattedInfos.get(11) != -1) {
             String comments = cells.eq(formattedInfos.get(11)).text();
             builder.setComments(comments);
+        }
+    }
+
+    private void addBoards(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
+        if(formattedInfos.get(10) != -1){
+            String boards = cells.eq(formattedInfos.get(10)).text();
+            builder.setBoards(boards);
         }
     }
 
