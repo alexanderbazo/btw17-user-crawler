@@ -41,7 +41,7 @@ public class Parliament extends Page {
             ParliamentMember.Builder builder = getMemberBuilder(formattedInfos, cells);
             addPhotoUrl(formattedInfos, cells, builder);
             addYearOfBirth(formattedInfos, cells, builder);
-            addElectoralDistrict(formattedInfos, cells, builder);
+            addElectoralDistrictAndKindOfMandate(formattedInfos, cells, builder);
 
             ParliamentMember member = builder.build();
             parliament.add(member);
@@ -115,19 +115,73 @@ public class Parliament extends Page {
         }
     }
 
-    private void addElectoralDistrict(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
+    private void addElectoralDistrictAndKindOfMandate(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
         if(formattedInfos.get(4) != -1) {
             String electoralDistrict;
             if (state == FederalState.BY) {
                 electoralDistrict = cells.eq(formattedInfos.get(4)).select("a").text() + " " + cells.eq(formattedInfos.get(7)).select("a").text();
             } else if (formattedInfos.get(14) != -1) {
-                electoralDistrict = cells.eq(formattedInfos.get(14)).text() + " " + cells.eq(formattedInfos.get(4)).text();
+                electoralDistrict =  cells.eq(formattedInfos.get(4)).text() + " " + cells.eq(formattedInfos.get(14)).text();
             } else {
                 electoralDistrict = cells.eq(formattedInfos.get(4)).text();
             }
-            builder.setElectoralDistrict(electoralDistrict);
+
+            if(electoralDistrict.contains("!")){
+                electoralDistrict = electoralDistrict.split("!")[1];
+            }
+            builder.setElectoralDistrict(electoralDistrict.trim());
+            String kindOfMandate = getKindOfMandate(formattedInfos, cells, electoralDistrict);
+            builder.setKindOfMandate(kindOfMandate);
         }
     }
+/*
+    TH: passt -> bei leeren Einträgen directMandate=false
+    SH: passt -> Bei "Listenmandat" directMandate=false
+    SAH: passt -> Bei "Listenmandat" directMandate=false
+    SAC:passt-> bei leeren Einträgen directMandate = false
+    SL: passt -> bei "Landesliste" directMandate = false;
+    RP: passt -> bei leeren Einträgen directMandate = false (list nicht immer true, Nachrücker...)
+    NRW:passt -> bei "Landesliste" directMandate= false
+    NS:passt -> bei "Landesliste" directMandate = false
+    MVP:passt -> bei "Landesliste" directMandate= false;
+    HE: Wahlkreis vor Wahlkreisname weg -> bei "Landesliste" directMandate = false;
+    HA:passt-> bei leer oder - directMandate = false;
+    BRE: passt -> Zahlen durch Bremen bzw. Bremerhaven ersetzen
+    BRA:passt -> leere Einträge directMandate = false
+    BER:passt -> "Landesliste" directMandate=false, Liste -> Landesliste, Bezirksliste
+    BY: passt -> direkt Mandat nach entsprechender Spalte ja-> true
+    BW: passt -> es gibt nicht Direkt/List, sondern 1./2. -> nach entsprechender Spalte
+    */
+    private String getKindOfMandate(ArrayList<Integer> formattedInfos, Elements cells, String electoralDistrict){
+        String mandate;
+        if(electoralDistrict.equals("Listenmandat")||electoralDistrict.equals("Landesliste")){
+            mandate = "Landesliste";
+        }else if(state == FederalState.BW){
+            mandate = cells.eq(formattedInfos.get(5)).text();
+        }else if(state == FederalState.BY){
+            if((cells.eq(formattedInfos.get(8)).text()).equals("ja")){
+                mandate ="Direktmandat";
+            }else{
+                mandate="Landesliste";
+            }
+        }else if (state == FederalState.BRE){
+            mandate = "keine Infos";
+        }else if(state== FederalState.BER){
+            if(electoralDistrict.contains("Bezirksliste")){
+                mandate = electoralDistrict;
+            }else if(electoralDistrict.equals("Landesliste")){
+                mandate="Landesliste";
+            }else{
+                mandate = "Direktmandat";
+            }
+        }else if(electoralDistrict.equals("")){
+            mandate="Landesliste";
+        }else{
+            mandate = "Direktmandat";
+        }
+        return mandate;
+    }
+
 }
 
 

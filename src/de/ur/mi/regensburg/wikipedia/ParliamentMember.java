@@ -14,9 +14,8 @@ public class ParliamentMember {
     private final String yearOfBirth; //int?
     private final String electoralDistrict;
     private final String votesPercentage; //double?
-    private final String directMandate; //boolean?
+    private final String kindOfMandate; //boolean?
     private final String photoURL;
-    private final String kindOfMandateBW;
     private final String comments;
     private final String boards;
 
@@ -28,11 +27,10 @@ public class ParliamentMember {
         private final String lastName;
         //optional parameters
         private String votesPercentage = ""; //double?
-        private String directMandate = ""; //boolean?
+        private String kindOfMandate = ""; //enum?
         private String electoralDistrict = "";
         private String yearOfBirth =""; //int?
         private String photoURL = "";
-        private String kindOfMandateBW = "";
         private String comments = "";
         private String boards = "";
 
@@ -49,8 +47,8 @@ public class ParliamentMember {
             return this;
         }
 
-        public Builder setDirectMandate(String value) {
-            directMandate = value;
+        public Builder setKindOfMandate(String value) {
+            kindOfMandate = value;
             return this;
         }
 
@@ -66,11 +64,6 @@ public class ParliamentMember {
 
         public Builder setPhotoURL (String value){
             photoURL = value;
-            return this;
-        }
-
-        public Builder setkindOfMandateBW (String value){
-            kindOfMandateBW = value;
             return this;
         }
 
@@ -97,11 +90,10 @@ public class ParliamentMember {
         this.lastName = builder.lastName;
         this.party = builder.party;
         this.votesPercentage = builder.votesPercentage;
-        this.directMandate = builder.directMandate;
+        this.kindOfMandate = builder.kindOfMandate;
         this.electoralDistrict = builder.electoralDistrict;
         this.yearOfBirth = builder.yearOfBirth;
         this.photoURL = builder.photoURL;
-        this.kindOfMandateBW = builder.kindOfMandateBW;
         this.comments = builder.comments;
         this.boards = builder.boards;
     }
@@ -132,16 +124,12 @@ public class ParliamentMember {
         return votesPercentage;
     }
 
-    public String getDirectMandate (){
-        return directMandate;
+    public String getKindOfMandate(){
+        return kindOfMandate;
     }
 
     public String getPhotoURL() {
         return photoURL;
-    }
-
-    public String getKindOfMandateBW() {
-        return kindOfMandateBW;
     }
 
     public String getComments() {
@@ -162,9 +150,8 @@ public class ParliamentMember {
                 ", party='" + party + '\'' +
                 ", electoralDistrict='" + electoralDistrict + '\'' +
                 ", votesPercentage='" + votesPercentage + '\'' +
-                ", directMandate='" + directMandate + '\'' +
+                ", kindOfMandate='" + kindOfMandate + '\'' +
                 ", photoURL='" + photoURL + '\'' +
-                ", kindOfMandateBW='" + kindOfMandateBW + '\'' +
                 ", comments='" + comments + '\'' +
                 ", boards='" + boards + '\'' +
                 '}';
