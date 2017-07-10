@@ -52,6 +52,10 @@ public class Config {
     public static final int CONFIG_DISTRICT_NUM = 14;
 
 
+    public static final int MAX_MEMBER_ATTRIBUTES = 13;
+    public static final String CSV_QUOTES ="\"";
+
+
 
 
 }

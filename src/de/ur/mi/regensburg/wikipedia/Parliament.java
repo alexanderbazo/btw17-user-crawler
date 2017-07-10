@@ -177,6 +177,9 @@ public class Parliament extends Page {
     private void addVotesPercentage(ArrayList<Integer> formattedInfos, Elements cells, ParliamentMember.Builder builder){
         if(formattedInfos.get(Config.CONFIG_PERCENT) != -1){
             String votesPercentage = cells.eq(formattedInfos.get(Config.CONFIG_PERCENT)).text();
+            if(votesPercentage.contains("!")){
+                votesPercentage = votesPercentage.split("!")[1];
+            }
             builder.setVotesPercentage(votesPercentage);
         }
     }
