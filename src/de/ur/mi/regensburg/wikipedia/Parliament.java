@@ -22,7 +22,6 @@ public class Parliament extends Page {
             return null;
         }
 
-
         ArrayList<Integer> formattedInfos = reformatInfoRow(posOfInfosRow);
 
         ArrayList<ParliamentMember> parliament = new ArrayList<>();
@@ -49,6 +48,7 @@ public class Parliament extends Page {
             addDistrictRank(formattedInfos, cells, builder);
 
             ParliamentMember member = builder.build();
+            
             parliament.add(member);
         }
         return parliament;
@@ -131,19 +131,34 @@ public class Parliament extends Page {
                 electoralDistrict = cells.eq(formattedInfos.get(Config.CONFIG_ELEC_DIS)).text();
             }
 
-            if(electoralDistrict.contains("!")){
-                electoralDistrict = electoralDistrict.split("!")[1];
-            }
-            if(state==FederalState.HE && electoralDistrict.contains("Wahlkreis")){
-                electoralDistrict = electoralDistrict.split("Wahlkreis")[1];
-            }
-            builder.setElectoralDistrict(electoralDistrict.trim());
             String kindOfMandate = getKindOfMandate(formattedInfos, cells, electoralDistrict);
+            electoralDistrict = cleanElectoralDistrict(electoralDistrict, kindOfMandate);
+            builder.setElectoralDistrict(electoralDistrict.trim());
             builder.setKindOfMandate(kindOfMandate);
         }
     }
 
-    //To-Do: Verbalisieren der Zahlen -> no magic numbers
+    private String cleanElectoralDistrict(String electoralDistrict, String kindOfMandate){
+        if(electoralDistrict.contains("!")){
+            electoralDistrict = electoralDistrict.split("!")[1];
+        }
+        if(state==FederalState.HE && electoralDistrict.contains("Wahlkreis")){
+            electoralDistrict = electoralDistrict.split("Wahlkreis")[1];
+        }
+        if(state==FederalState.BRE && electoralDistrict.equals("1")){
+            electoralDistrict = "Stadtgemeinde Bremen";
+        }
+        if(state==FederalState.BRE && electoralDistrict.equals("2")){
+            electoralDistrict = "Stadtgemeinde Bremerhaven";
+        }
+        if(electoralDistrict.equals(kindOfMandate)){
+            electoralDistrict = "";
+        }
+        return electoralDistrict;
+    }
+
+
+    //
     private String getKindOfMandate(ArrayList<Integer> formattedInfos, Elements cells, String electoralDistrict){
         String mandate;
         if(electoralDistrict.equals("Listenmandat")||electoralDistrict.equals("Landesliste")){
@@ -180,7 +195,10 @@ public class Parliament extends Page {
             if(votesPercentage.contains("!")){
                 votesPercentage = votesPercentage.split("!")[1];
             }
-            builder.setVotesPercentage(votesPercentage);
+            if(votesPercentage.contains("%")){
+                votesPercentage = votesPercentage.split("%")[0];
+            }
+            builder.setVotesPercentage(votesPercentage.trim());
         }
     }
 

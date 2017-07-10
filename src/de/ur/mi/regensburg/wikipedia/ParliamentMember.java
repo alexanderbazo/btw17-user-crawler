@@ -164,6 +164,7 @@ public class ParliamentMember {
         return districtRank;
     }
 
+
     @Override
     public String toString() {
         return "ParliamentMember{" +
