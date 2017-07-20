@@ -9,10 +9,11 @@ import java.util.ArrayList;
 public class Parliament extends Page {
     private FederalState state;
 
-    public Parliament(FederalState state, String contentSelector) {
-        super(Config.PAGES_FOR_STATES[state.ordinal()], Language.DE, contentSelector);
+    public Parliament(String page, String contentSelector, FederalState state) {
+        super(page, Language.DE, true, contentSelector);
         this.state = state;
     }
+
 
     public ArrayList<ParliamentMember> members(String posOfInfosRow ) {
         if(!isLoaded()) {
@@ -28,9 +29,9 @@ public class Parliament extends Page {
         Elements rows;
         if(state== FederalState.BRE) {
             rows = getContentElements().eq(1).select("tbody tr");
-        }else{
+        }else {
             rows = getContentElements();
-    }
+        }
         for(Element el: rows) {
             Elements cells = el.select("td");
             if(cells.size() == 0) {
@@ -46,9 +47,10 @@ public class Parliament extends Page {
             addBoards(formattedInfos, cells, builder);
             addListRank(formattedInfos, cells, builder);
             addDistrictRank(formattedInfos, cells, builder);
+            addKindOfParliament(builder);
 
             ParliamentMember member = builder.build();
-            
+
             parliament.add(member);
         }
         return parliament;
@@ -71,12 +73,34 @@ public class Parliament extends Page {
     }
 
     private ParliamentMember.Builder getMemberBuilder(ArrayList<Integer> formattedInfos, Elements cells){
-        String federalState = state.name();
+        FederalState federalState = getState(formattedInfos, cells);
         String names = cells.eq(formattedInfos.get(Config.CONFIG_NAME)).select("a").text();
         String firstName = getFirstName(separateNames(names));
         String lastName = getLastName(separateNames(names));
         String party = cells.eq(formattedInfos.get(Config.CONFIG_PARTY)).text();
         return new ParliamentMember.Builder(federalState, party, firstName, lastName);
+    }
+
+    private FederalState getState(ArrayList<Integer> formattedInfos, Elements cells){
+        if(state!=FederalState.notDefined){
+            return state;
+        }else{
+
+            if(formattedInfos.get(Config.CONFIG_STATE)!=-1) {
+                String stateStr = cells.eq(formattedInfos.get(Config.CONFIG_STATE)).text();
+                for (int i = 0; i < Config.STATES_NAMES.length; i++) {
+                    if (Config.STATES_NAMES[i].equals(stateStr)) {
+                        return FederalState.values()[i];
+                    }else if (stateStr.contains("ringen")){
+                        return FederalState.TH;
+                    }else if (stateStr.contains("Baden-W")){
+                        return FederalState.BW;
+                    }
+                }
+            }
+
+        }
+        return(FederalState.notDefined);
     }
 
     private String[]separateNames(String names){
@@ -182,7 +206,11 @@ public class Parliament extends Page {
                 mandate = "Direktmandat";
             }
         }else if(electoralDistrict.equals("")){
-            mandate="Landesliste";
+            if(state==FederalState.notDefined){
+                mandate = "Liste";
+            }else{
+                mandate = "Landesliste";
+            }
         }else{
             mandate = "Direktmandat";
         }
@@ -233,6 +261,14 @@ public class Parliament extends Page {
                 districtRank = "";
             }
             builder.setDistrictRank(districtRank);
+        }
+    }
+
+    private void addKindOfParliament(ParliamentMember.Builder builder){
+        if (state==FederalState.notDefined){
+            builder.setKindOfParliament("Bundestag");
+        }else{
+            builder.setKindOfParliament("Landtag");
         }
     }
 
