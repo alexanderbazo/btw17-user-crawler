@@ -10,7 +10,7 @@ public class Parliament extends Page {
     private FederalState state;
 
     public Parliament(String page, String contentSelector, FederalState state) {
-        super(page, Language.DE, true, contentSelector);
+        super(page, Language.DE, true, false, contentSelector);
         this.state = state;
     }
 

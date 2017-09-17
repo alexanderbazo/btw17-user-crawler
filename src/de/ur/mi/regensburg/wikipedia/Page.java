@@ -8,34 +8,45 @@ import java.io.IOException;
 
 public class Page {
 
-    public static final String BASE_URL_DE = "https://de.wikipedia.org/wiki/";
-    public static final String BASE_URL_EN = "https://en.wikipedia.org/wiki/";
+    public static final String BASE_URL_WIKI_DE = "https://de.wikipedia.org/wiki/";
+    public static final String BASE_URL_WIKI_EN = "https://en.wikipedia.org/wiki/";
+    public static final String BASE_URL_BUNDESWAHLLEITER = "https://bundeswahlleiter.de/bundestagswahlen/2017/wahlbewerber/bund-99/";
 
     private String page;
     private Language language;
+    private boolean isFromWikipedia;
+    private boolean isBundeswahlLeiter;
     private final String contentSelector;
     private String url;
     private boolean loaded = false;
     private Document document;
     private Elements content;
 
-    public Page(String page, Language language, String contentSelector) {
+    public Page(String page, Language language, boolean isFromWikipedia, boolean isBundeswahlLeiter, String contentSelector) {
+
         this.page = page;
         this.language = language;
         this.contentSelector = contentSelector;
+        this.isFromWikipedia = isFromWikipedia;
+        this.isBundeswahlLeiter = isBundeswahlLeiter;
         initUrl();
     }
 
     private void initUrl() {
-        switch (language) {
-            case DE:
-                url = BASE_URL_DE + page;
-                break;
-            case EN:
-                url = BASE_URL_EN + page;
-                break;
-            default:
-                break;
+        if(isFromWikipedia) {
+            switch (language) {
+                case DE:
+                    url = BASE_URL_WIKI_DE + page;
+                    break;
+                case EN:
+                    url = BASE_URL_WIKI_EN + page;
+                    break;
+                default:
+                    break;
+            }
+        }
+        if(isBundeswahlLeiter){
+            url = BASE_URL_BUNDESWAHLLEITER + page;
         }
     }
 

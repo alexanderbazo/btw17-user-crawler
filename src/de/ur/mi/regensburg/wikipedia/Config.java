@@ -25,11 +25,14 @@ public class Config {
     public static final String PAGE_TH = "Liste_der_Mitglieder_des_Th%C3%BCringer_Landtags_(6._Wahlperiode)";
     public static final String PAGE_SH_neu = "Liste_der_Mitglieder_des_Landtages_Schleswig-Holstein_(19._Wahlperiode)";
 
+    public static final String PAGE_BUNDESTAG = "Liste_der_Mitglieder_des_Deutschen_Bundestages_(18._Wahlperiode)";
+
     //Array to facilitate access to State-Pages, position in array is same as enum-ordinal of the state
     public static final String[] PAGES_FOR_STATES ={PAGE_BW, PAGE_BY, PAGE_BER, PAGE_BRA, PAGE_BRE, PAGE_HA, PAGE_HE, PAGE_MVP, PAGE_NS, PAGE_NRW, PAGE_RP, PAGE_SL, PAGE_SAC, PAGE_SAH, PAGE_SH_neu, PAGE_TH};
 
     //Path to CSV for structure info about webpages
-    public static final String PATH_TO_STRUCTURE_CSV = "E:\\Anna-Marie\\Documents\\Studium\\TwitterSHK\\DataScraper\\btw17-user-crawler\\ConfigFileFederalStateScraper.csv";
+    public static final String PATH_TO_STATE_STRUCTURE_CSV = "E:\\Anna-Marie\\Documents\\Studium\\TwitterSHK\\DataScraper\\btw17-user-crawler\\ConfigFileFederalStateScraper.csv";
+    public static final String PATH_TO_BUNDESTAG_STRUCTURE_CSV = "E:\\Anna-Marie\\Documents\\Studium\\TwitterSHK\\DataScraper\\btw17-user-crawler\\ConfigFileBundestagScraper.csv";
 
     //image of none
     public static final String IMAGE_OF_NONE= "Image_of_none.svg";
@@ -50,10 +53,34 @@ public class Config {
     public static final int CONFIG_LIST_RANK = 12;
     public static final int CONFIG_DISTRICT_RANK = 13;
     public static final int CONFIG_DISTRICT_NUM = 14;
+    public static final int CONFIG_STATE = 15;
 
 
     public static final int MAX_MEMBER_ATTRIBUTES = 13;
     public static final String CSV_QUOTES ="\"";
+
+
+    public static final String [] STATES_NAMES ={"Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", "Niedersachsen", "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", "Thüringen", ""};
+
+    public static final int BUNDESTAG = 0;
+    public static final int LANDTAG = 1;
+
+    public static final String HEADER_YEAR_OF_BIRTH = "year.of.birth";
+    public static final String HEADER_PARTY = "party";
+    public static final String HEADER_LAST_NAME = "last.name";
+    public static final String HEADER_FIRST_NAME = "first.name";
+    public static final String HEADER_PARLIAMENT = "parliament";
+    public static final String HEADER_STATE = "federal.state";
+    public static final String HEADER_COMMENTS = "comments";
+    public static final String HEADER_BOARDS = "boards";
+    public static final String HEADER_ELECTORAL_DISTRICT = "electoral.district";
+    public static final String HEADER_VOTES_PERCENTAGE = "votes.percentage";
+    public static final String HEADER_KIND_OF_MANDATE = "kind.of.mandate";
+    public static final String HEADER_LIST_RANK = "list.rank";
+    public static final String HEADER_DISTRICT_RANK = "district.rank";
+    public static final String HEADER_PHOTO_URL = "photo.url";
+
+    public static final String HEADER_CANDIDATE_WHICH_PARLIAMENT = "candidate.for.which.parliament";
 
 
 

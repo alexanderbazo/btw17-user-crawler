@@ -7,7 +7,7 @@ package de.ur.mi.regensburg.wikipedia;
  */
 public class ParliamentMember {
 
-    private final String federalState;
+    private final FederalState federalState;
     private final String party;
     private final String firstName;
     private final String lastName;
@@ -20,10 +20,11 @@ public class ParliamentMember {
     private final String boards;
     private final String listRank;
     private final String districtRank;
+    private final String kindOfParliament;
 
     public static class Builder {
         //required parameters
-        private final String federalState;
+        private final FederalState federalState;
         private final String party;
         private final String firstName;
         private final String lastName;
@@ -37,9 +38,10 @@ public class ParliamentMember {
         private String boards = "";
         private String listRank = "";
         private String districtRank = "";
+        private String kindOfParliament = "";
 
 
-        public Builder(String federalState, String party, String firstName, String lastName) {
+        public Builder(FederalState federalState, String party, String firstName, String lastName) {
             this.federalState = federalState;
             this.party = party;
             this.firstName = firstName;
@@ -91,6 +93,10 @@ public class ParliamentMember {
             return this;
         }
 
+        public Builder setKindOfParliament(String value){
+            kindOfParliament = value;
+            return this;
+        }
 
         public ParliamentMember build() {
             return new ParliamentMember(this);
@@ -112,9 +118,10 @@ public class ParliamentMember {
         this.boards = builder.boards;
         this.listRank = builder.listRank;
         this.districtRank = builder.districtRank;
+        this.kindOfParliament = builder.kindOfParliament;
     }
 
-    public String getFederalState(){ return federalState; }
+    public FederalState getFederalState(){ return federalState; }
 
     public String getFirstName() {
         return firstName;
@@ -164,6 +171,10 @@ public class ParliamentMember {
         return districtRank;
     }
 
+    public String getKindOfParliament(){
+        return kindOfParliament;
+    }
+
 
     @Override
     public String toString() {
@@ -172,6 +183,7 @@ public class ParliamentMember {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", yearOfBirth='" + yearOfBirth + '\'' +
+                ", kindOfParliament='" + kindOfParliament + '\'' +
                 ", party='" + party + '\'' +
                 ", electoralDistrict='" + electoralDistrict + '\'' +
                 ", votesPercentage='" + votesPercentage + '\'' +
